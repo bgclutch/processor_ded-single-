@@ -2,25 +2,25 @@
 #include <math.h>
 #include <assert.h>
 #include <string.h>
-#include "../stack_ded/stack_headers/stack.h"
-#include "../stack_ded/stack_headers/colorised_output.h"
+#include "../../stack_ded/stack_headers/stack.h"
+#include "../../stack_ded/stack_headers/colorised_output.h"
 #include "../processor_headers/processor.h"
-#include "../lib_file_proc/file.h"
-#include "../lib_buffer_proc/buffer.h"
+#include "../../lib_buffer_proc/buffer.h"
+#include "../../lib_file_proc/file.h"
 
 
-int main(int argc, char* argv)
+int main(int argc, char* argv[])
 {
-    if(argc < 0) // FIXME *expected value* instead of '0' and add execution default file
-    {
-        fprintf(stderr, "Default code will be executed\n"); // FIXME podumat'
-        return 0;
-    }
+    // if(argc < 2) // FIXME *expected value* instead of '0' and add execution default file
+    // {
+    //     fprintf(stderr, "Default code will be executed\n"); // FIXME podumat'
+    //     return 0;
+    // }
     // TODO decoder!!!
     Struct_SPU SPU = {};
 
     FILE* file_read = nullptr;
-    file_read = file_read_open(file_read, (const char*)argv[2]);
+    file_read = file_read_open(file_read, "machine_code.asm");
 
     if(!res_checker((ssize_t)file_read)) //TODO fprintf error
         return 0;
@@ -79,7 +79,7 @@ int main(int argc, char* argv)
                 StackElem_t divisor  = 0;
                 Error_Codes stk_pop_dvdnt_err = stack_pop(&SPU.stack, &divisor);
                 Error_Codes std_pop_dvsr_err  = stack_pop(&SPU.stack, &divident);
-                Error_Codes stk_push_err = stack_push(&SPU.stack, divident / divisor);
+                Error_Codes stk_push_err = stack_push(&SPU.stack, divident / divisor); // TODO check div 0
                 SPU.ip++;
                 break;
             }
